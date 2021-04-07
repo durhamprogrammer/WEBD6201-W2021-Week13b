@@ -35,19 +35,60 @@ export function DisplayContactPage(req:Request, res:Response, next:NextFunction)
 
 export function DisplayLoginPage(req:Request, res:Response, next:NextFunction): void
 {
-    res.render('index', { title: 'Login', page: 'login', displayName: ''    });
+    if(!req.user)
+    {
+        res.render('index', 
+        { 
+            title: 'Login', 
+            page: 'login', 
+            messages: req.flash('loginMessage'),
+            displayName: req.user ? req.user.displayName : ''    });
+    }
+
+    return res.redirect('/contact-list');
 }
 
 export function DisplayRegisterPage(req:Request, res:Response, next:NextFunction): void
 {
-    res.render('index', { title: 'Register', page: 'register', displayName: ''    });
+    if(!req.user)
+    {
+        res.render('index', { title: 'Register', page: 'register', displayName: ''    });
+    }
+
+    return res.redirect('/contact-list');
 }
 
 // Process Page Functions
 
 export function ProcessLoginPage(req:Request, res:Response, next:NextFunction): void
 {
-    res.redirect('/contact-list');
+    passport.authenticate('local', (err, user, info) => {
+        // are there server errors?
+        if(err)
+        {
+            console.error(err);
+            return next(err);
+        }
+
+        // are the login errors?
+        if(!user)
+        {
+            req.flash('loginMessage', 'Authentication Error');
+            return res.redirect('/login');
+        }
+
+        req.login(user, (err) => {
+            // are there DB errors?
+            if(err)
+            {
+                console.error(err);
+                return next(err);
+            }
+
+            return res.redirect('/contact-list');
+        });
+    })(req, res, next);
+    
 }
 
 export function ProcessLogoutPage(req:Request, res:Response, next:NextFunction): void
