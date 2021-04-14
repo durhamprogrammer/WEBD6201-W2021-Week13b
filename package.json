@@ -1,9 +1,9 @@
 {
-  "name": "webd6201-w2021-ice11",
+  "name": "webd6201-w2021-week10b",
   "version": "1.0.0",
-  "description": "Demo Site for ICE 11",
+  "description": "Demo Site for Week 10",
   "main": "server.js",
-  "repository": "https://github.com/durhamprogrammer/WEBD6201-W2021-ICE11b.git",
+  "repository": "https://github.com/durhamprogrammer/WEBD6201-W2021-Week10B.git",
   "author": "Tom Tsiliopoulos <tsiliopoulos@hotmail.com>",
   "license": "MIT",
   "engines": {
