@@ -30,6 +30,7 @@ declare global
 {
     export type UserDocument = mongoose.Document &
     {
+        _id: String,
         username: String,
         emailAddress: String,
         displayName: String

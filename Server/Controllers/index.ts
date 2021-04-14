@@ -6,7 +6,8 @@ import passport from 'passport';
 import User from '../Models/user';
 
 // Util Functions
-import { UserDisplayName } from '../Util/index';
+import { UserDisplayName, GenerateToken } from '../Util/index';
+
 
 // Display Page Functions
 export function DisplayHomePage(req:Request, res:Response, next:NextFunction): void
@@ -93,6 +94,13 @@ export function ProcessLoginPage(req:Request, res:Response, next:NextFunction): 
                 return next(err);
             }
 
+            const authToken = GenerateToken(user);
+
+            console.log(authToken);
+
+            // if we had a front-end (like Angular or React or Vue)...
+            //return res.json({success: true, msg: 'User Logged in Successfully!', user: user, token: authToken});
+
             return res.redirect('/contact-list');
         });
     })(req, res, next);
@@ -120,9 +128,13 @@ export function ProcessRegisterPage(req:Request, res:Response, next:NextFunction
             return res.redirect('/register');
         }
 
+        // if we had a front-end (Angular, React or Vue)...
+        //return res.json({success: true, msg: 'User Registered Successfully!'});
+
         // automatically login the user
         return passport.authenticate('local')(req, res, ()=>
         {
+            //return res.json({success: true, msg: 'User Logged in Successfully!', user: newUser, token: GenerateToken(user)});
             return res.redirect('/contact-list');
         });
     });
@@ -132,6 +144,10 @@ export function ProcessLogoutPage(req:Request, res:Response, next:NextFunction):
 {
     req.logout();
     console.log("User Logged Out");
+
+    // if we had a front-end (Angular, React or Vue)...
+    //res.json({success: true, msg: 'User Logged out Successfully!'});
+
     res.redirect('/login');
 }
 
